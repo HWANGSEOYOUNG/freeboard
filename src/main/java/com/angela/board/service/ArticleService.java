@@ -21,8 +21,8 @@ public class ArticleService {
     }
 
     @Transactional(readOnly = true)
-    public List<Article> listOfArticle(){
-        return articleRepository.findAll();
+    public List<Article> listOfArticle(long boardId){
+        return articleRepository.findAllByBoard_BoardId(boardId);
     }
 
     @Transactional
@@ -30,5 +30,9 @@ public class ArticleService {
         return articleRepository.findById(id);
     }
 
+    @Transactional
+    public void deleteArticle(long id){
+        articleRepository.deleteById(id);
+    }
 
 }

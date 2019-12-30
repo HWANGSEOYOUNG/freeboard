@@ -2,12 +2,12 @@ package com.angela.board.controller;
 
 import com.angela.board.entity.Article;
 import com.angela.board.service.ArticleService;
+import com.angela.board.service.BoardService;
 import io.swagger.annotations.Api;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @Api
 @RestController
@@ -17,21 +17,26 @@ public class ArticleController {
 
     private final ArticleService articleService;
 
+    private final BoardService boardService;
+
     //게시글 생성
-    @RequestMapping(path = "/write", method = RequestMethod.POST)
-    public Article create(@RequestBody Article article){
+    @RequestMapping(path = "/{boardId}/write", method = RequestMethod.POST)
+    public Article create(@PathVariable("boardId") long boardId, @RequestBody Article article){
+
+        article.setBoard(boardService.selectBoardId(boardId));
         return articleService.createArticle(article);
     }
 
     //전체 게시글 읽기
-    public List<Article> listAll(){
-        return articleService.listOfArticle();
+    @RequestMapping(path = "/{boardId}/list", method = RequestMethod.GET)
+    public List<Article> listAll(@PathVariable("boardId")long boardId){
+        return articleService.listOfArticle(boardId);
     }
 
     //선택한 게시글 읽기
     @RequestMapping(path = "/{id}", method = RequestMethod.GET)
-    public Optional<Article> retrieve(@PathVariable long id){
-        return articleService.itemArticle(id);
+    public Article retrieve(@PathVariable("id") long id){
+        return articleService.itemArticle(id).get();
     }
 
     //게시글 수정
@@ -43,9 +48,14 @@ public class ArticleController {
 
     //게시글 삭제
     @RequestMapping(path = "/{id}/del", method = RequestMethod.DELETE)
-    public Article delete(){
+    public Article delete(@PathVariable("id")long id){
 
-        return new Article();
+        articleService.deleteArticle(id);
+
+        Article deleteArticle = new Article();
+        deleteArticle.setId(id);
+
+        return deleteArticle;
     }
 
 }

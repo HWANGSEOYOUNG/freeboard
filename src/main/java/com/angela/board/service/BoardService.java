@@ -33,4 +33,8 @@ public class BoardService {
     public void deleteBoard(long boardId){
         boardRepository.deleteById(boardId);
     }
+
+    public Board selectBoardId(long boardId){
+        return boardRepository.findByBoardId(boardId);
+    }
 }

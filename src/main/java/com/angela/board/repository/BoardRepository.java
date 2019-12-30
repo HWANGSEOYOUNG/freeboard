@@ -13,4 +13,6 @@ public interface BoardRepository extends JpaRepository<Board,Long> {
     @Modifying
     @Query(value = "UPDATE Board b SET b.name = :name WHERE b.boardId = :boardId")
     int updateBoardName(@Param("boardId") long boardId, @Param("name") String name);
+
+    Board findByBoardId(long boardId);
 }
