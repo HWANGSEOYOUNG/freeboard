@@ -18,15 +18,15 @@ public class BoardService {
         return boardRepository.save(board);
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public List<Board> listOfBoard(){
         return boardRepository.findAll();
     }
 
     //borad name 수정
     @Transactional
-    public int updateBoard(String name){
-        return 0;
+    public int updateBoard(long boardId, String name){
+        return boardRepository.updateBoardName(boardId, name);
     }
 
     @Transactional

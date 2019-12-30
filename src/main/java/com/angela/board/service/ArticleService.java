@@ -20,7 +20,7 @@ public class ArticleService {
         return articleRepository.save(article);
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public List<Article> listOfArticle(){
         return articleRepository.findAll();
     }

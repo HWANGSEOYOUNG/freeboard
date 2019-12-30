@@ -35,7 +35,7 @@ public class ArticleController {
     }
 
     //게시글 수정
-    @RequestMapping(path = "/{id}/modify", method = RequestMethod.PUT)
+    @RequestMapping(path = "/{id}/modify", method = RequestMethod.PATCH)
     public int update(){
 
         return 0;
