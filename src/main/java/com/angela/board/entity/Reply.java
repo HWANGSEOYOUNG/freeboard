@@ -18,7 +18,7 @@ public class Reply {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long reId;
 
-    //댓글의 부모 게시글 번호
+    //댓글의 부모 게시글
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_article")
     private Article article;
@@ -31,6 +31,4 @@ public class Reply {
     @Column
     @CreationTimestamp
     private Date reCreateDate;
-
-
 }

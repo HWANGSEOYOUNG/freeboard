@@ -5,13 +5,14 @@ import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 
 //게시글
 @Getter
 @Setter
 @Entity
-public class Article {
+public class Article implements Serializable {
 
     //게시번호
     @Id
@@ -30,6 +31,11 @@ public class Article {
     @Column
     @CreationTimestamp
     private Date createDate;
+
+    //게시글의 소속 게시판
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name= "id_board")
+    private Board board;
 
 
 }
