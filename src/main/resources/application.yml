@@ -1,0 +1,31 @@
+#spring:
+#  freemarker:
+#    suffix: .html
+#  devtools:
+#    restart:
+#      enabled: false
+
+spring:
+  jpa:
+    open-in-view: false
+
+logging:
+  level:
+    org.springframework.web: debug
+    com.sqad: DEBUG
+    org.hibernate.type.descriptor.sql: trace
+
+server:
+#  ssl:
+#    enabled: true
+#    key-store: classpath:keystore.p12
+#    key-store-password: popsdev
+#    key-store-type: PKCS12
+#    key-alias: pops-ssl
+  port: 8000
+
+application.firebase.server.key: AAAAC0gQMPY:APA91bECXU0418xEXHhasY0ZO_QbxIf2BeUQbvZYFnrC1veGqzNcsYGzzxGOxwLOcZ-mh56pFXiGTF3SsWIvgMFTglOAADu8ACCwwx3rJe5rV26sEncHdf5jgSeLNclE5FMKG1Jg8lnq
+application.firebase.api.url: https://fcm.googleapis.com/fcm/send
+#spring:
+#  jooq:
+#    sql-dialect: mariadb
