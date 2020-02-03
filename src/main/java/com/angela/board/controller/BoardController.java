@@ -4,7 +4,6 @@ import com.angela.board.entity.Board;
 import com.angela.board.service.BoardService;
 import io.swagger.annotations.Api;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,8 +14,7 @@ import java.util.List;
 @RequestMapping("/manage")
 public class BoardController {
 
-    @Autowired
-    private BoardService boardService;
+    private final BoardService boardService;
 
     //게시판 생성
     @RequestMapping(path = "/new", method = RequestMethod.POST)
