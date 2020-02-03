@@ -56,10 +56,10 @@ public class SwaggerConfig {
 
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
-                .title("AR Line")
+                .title("Board Test")
                 .description("API List")
                 .version("1.0")
-                .contact(new Contact("popsline", "http://popsline.co.kr", "vito@popsline.co.kr"))
+                .contact(new Contact("popsline", "http://popsline.co.kr", "angela@popsline.co.kr"))
                 .build();
     }
 }
