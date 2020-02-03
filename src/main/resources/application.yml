@@ -1,0 +1,8 @@
+logging:
+  level:
+    org.springframework.web: debug
+    com.sqad: DEBUG
+    org.hibernate.type.descriptor.sql: trace
+
+server:
+  port: 8000
