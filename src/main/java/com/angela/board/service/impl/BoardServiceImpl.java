@@ -1,6 +1,5 @@
 package com.angela.board.service.impl;
 
-
 import com.angela.board.data.dto.BoardDTO;
 import com.angela.board.data.dto.BoardUpdateDTO;
 import com.angela.board.data.vo.BoardVO;
@@ -11,9 +10,11 @@ import com.angela.board.service.BoardService;
 import com.google.common.collect.Lists;
 import com.querydsl.core.BooleanBuilder;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 @RequiredArgsConstructor
@@ -23,12 +24,36 @@ public class BoardServiceImpl implements BoardService {
     private final BoardRepository boardRepository;
 
     @Override
+    public Optional<Board> getBoard(String boardName) {
+        Board board = new Board();
+        board.setName(boardName);
+        Example<Board> e = Example.of(board);
+
+        return boardRepository.findOne(e);
+    }
+
+    @Override
+    public BoardVO getBoardByName(String boardName) {
+        return new BoardVO(entityBoardByName(boardName));
+    }
+
+    @Override
+    public Board entityBoardByName(String boardName) {
+        BooleanBuilder builder = new BooleanBuilder();
+        QBoard qBoard = QBoard.board;
+        builder.and(qBoard.name.equalsIgnoreCase(boardName));
+
+        Optional<Board> getBoard = boardRepository.findOne(builder);
+        return getBoard.orElse(null);
+    }
+
+    @Override
     public List<BoardVO> getBoardList() {
         List<BoardVO> boardList = null;
         List<Board> result = boardRepository.findAll();
-        if(result.size()>0){
+        if (result.size() > 0) {
             boardList = Lists.newArrayList();
-            for (Board board : result){
+            for (Board board : result) {
                 BoardVO vo = new BoardVO(board);
                 boardList.add(vo);
             }
@@ -38,13 +63,12 @@ public class BoardServiceImpl implements BoardService {
 
     @Override
     public boolean addBoard(BoardDTO param) {
-
         BooleanBuilder builder = new BooleanBuilder();
         QBoard qBoard = QBoard.board;
         builder.and(qBoard.name.contains(param.getName()));
 
         AtomicBoolean result = new AtomicBoolean(false);
-        if(boardRepository.findOne(builder).isEmpty()){
+        if (boardRepository.findOne(builder).isEmpty()) {
             Board board = new Board();
             board.setName(param.getName());
             boardRepository.save(board);
@@ -55,8 +79,7 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
-    public boolean updateBoard(BoardUpdateDTO param){
-
+    public boolean updateBoard(BoardUpdateDTO param) {
         BooleanBuilder builder = new BooleanBuilder();
         QBoard qBoard = QBoard.board;
         builder.and(qBoard.id.eq(param.getId()));
@@ -73,7 +96,6 @@ public class BoardServiceImpl implements BoardService {
 
     @Override
     public boolean deleteBoard(String name) {
-
         BooleanBuilder builder = new BooleanBuilder();
         QBoard qBoard = QBoard.board;
         builder.and(qBoard.name.contains(name));

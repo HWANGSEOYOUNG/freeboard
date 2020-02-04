@@ -3,7 +3,6 @@ package com.angela.board.api;
 import com.angela.board.data.dto.BoardDTO;
 import com.angela.board.data.dto.BoardUpdateDTO;
 import com.angela.board.data.vo.BoardVO;
-import com.angela.board.model.board.repository.BoardRepository;
 import com.angela.board.service.BoardService;
 import io.swagger.annotations.Api;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +16,6 @@ import java.util.List;
 @RequestMapping("/manage")
 public class BoardApi {
 
-    private final BoardRepository boardRepository;
     private final BoardService boardService;
 
     @PostMapping("/add")

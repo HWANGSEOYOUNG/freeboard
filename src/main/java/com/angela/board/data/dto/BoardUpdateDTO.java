@@ -6,7 +6,6 @@ import lombok.Setter;
 @Getter
 @Setter
 public class BoardUpdateDTO {
-
     private Long id;
     private String name;
 }
