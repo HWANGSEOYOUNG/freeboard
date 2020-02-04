@@ -2,12 +2,10 @@ package com.angela.board.data.vo;
 
 import com.angela.board.model.board.Board;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
-@NoArgsConstructor
 public class BoardVO {
     private String name;
 

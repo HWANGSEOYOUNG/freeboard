@@ -15,7 +15,7 @@ public interface ArticleService {
 
     List<ArticleVO> findArticlesBoardGroup(Board board);
 
-    //ArticleVO getArticleById(Long id);
+    ArticleVO getArticleById(Long id);
 
     boolean updateArticle(Long id, ArticleDTO article);
 

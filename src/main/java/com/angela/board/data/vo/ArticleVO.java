@@ -12,4 +12,5 @@ public class ArticleVO {
     private String createDate;
 
     private BoardVO boardVO;
+
 }

@@ -12,12 +12,15 @@ import com.angela.board.service.BoardService;
 import com.google.common.collect.Lists;
 import com.querydsl.core.BooleanBuilder;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+@Slf4j
 @RequiredArgsConstructor
 @Service
 public class ArticleServiceImpl implements ArticleService {
@@ -30,13 +33,13 @@ public class ArticleServiceImpl implements ArticleService {
         Article saved = new Article();
 
         saved.setBoard(boardService.entityBoardByName(boardName));
-        if(saved.getBoard() != null){
+        if (saved.getBoard() != null) {
             saved.setTitle(article.getTitle());
             saved.setContent(article.getContent());
             Article result = articleRepository.save(saved);
 
             return !ObjectUtils.isEmpty(result);
-        }else {
+        } else {
             return false;
         }
     }
@@ -62,14 +65,26 @@ public class ArticleServiceImpl implements ArticleService {
         return results;
     }
 
-//    @Override
-//    public ArticleVO getArticleById(Long id) {
-//        Optional<Article> getArticle = articleRepository.findById(id);
-//
-//        ArticleVO articleVO = new ArticleVO();
-//
-//        return null;
-//    }
+    //@Transactional
+    @Override
+    public ArticleVO getArticleById(Long id) {
+        BooleanBuilder builder = new BooleanBuilder();
+        QArticle qArticle = QArticle.article;
+        builder.and(qArticle.id.eq(id));
+        Optional<Article> getArticle = articleRepository.findOne(builder);
+
+        if (!getArticle.isEmpty()) {
+            ArticleVO articleVO = ArticleVO.builder()
+                    .title(getArticle.get().getTitle())
+                    .content(getArticle.get().getContent())
+                    .boardVO(boardService.getBoardByName(getArticle.get().getBoard().getName()))
+                    .build();
+            return articleVO;
+        } else {
+            return null;
+        }
+
+    }
 
     @Override
     public boolean updateArticle(Long id, ArticleDTO article) {

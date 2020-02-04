@@ -10,7 +10,7 @@ spring:
     hibernate:
       naming:
         implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyJpaCompliantImpl
-      ddl-auto: create
+      ddl-auto: update
     open-in-view: false
     generate-ddl: true
     properties:

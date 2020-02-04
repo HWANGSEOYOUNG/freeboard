@@ -7,11 +7,13 @@ import com.angela.board.service.ArticleService;
 import com.angela.board.service.BoardService;
 import io.swagger.annotations.Api;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
 
+@Slf4j
 @Api
 @RestController
 @RequiredArgsConstructor
@@ -26,7 +28,7 @@ public class ArticleApi {
         return articleService.createArticle(boardName,article);
     }
 
-    //전체 게시글 읽기
+    //게시판 내 전체 게시글
     @GetMapping("/list")
     public List<ArticleVO> list(@RequestParam String boardName){
         Optional<Board> board = boardService.getBoard(boardName);
@@ -36,10 +38,9 @@ public class ArticleApi {
         return articleService.findArticlesBoardGroup(board.get());
     }
 
-    //선택한 게시글 읽기
     @GetMapping("/article")
-    public boolean retrieve(@RequestParam Long id){
-        return  true;
+    public ArticleVO retrieve(@RequestParam Long id){
+        return  articleService.getArticleById(id);
     }
 
     @PutMapping("/modify")
