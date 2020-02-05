@@ -15,7 +15,6 @@ import java.util.List;
 @Entity
 @ToString(exclude = "articles")
 public class Board extends BaseEntity<Long> {
-
     private String name;
 
     @OneToMany(orphanRemoval = true, mappedBy = "board")

@@ -16,6 +16,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -36,6 +38,7 @@ public class ArticleServiceImpl implements ArticleService {
         if (saved.getBoard() != null) {
             saved.setTitle(article.getTitle());
             saved.setContent(article.getContent());
+            saved.setCreateDate(LocalDateTime.now());
             Article result = articleRepository.save(saved);
 
             return !ObjectUtils.isEmpty(result);
@@ -54,8 +57,11 @@ public class ArticleServiceImpl implements ArticleService {
 
         articles.forEach(article -> {
             ArticleVO art = ArticleVO.builder()
+                    .id(article.getId())
                     .title(article.getTitle())
                     .content(article.getContent())
+                    .createDate(article.getCreateDate().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss")))
+                    .updateDate(article.getUpdateDate() == null ? null : article.getUpdateDate().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss")))
                     .boardVO(boardService.getBoardByName(article.getBoard().getName()))
                     .build();
 
@@ -75,8 +81,11 @@ public class ArticleServiceImpl implements ArticleService {
 
         if (!getArticle.isEmpty()) {
             ArticleVO articleVO = ArticleVO.builder()
+                    .id(getArticle.get().getId())
                     .title(getArticle.get().getTitle())
                     .content(getArticle.get().getContent())
+                    .createDate(getArticle.get().getCreateDate().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss")))
+                    .updateDate(getArticle.get().getUpdateDate() == null ? null : getArticle.get().getUpdateDate().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss")))
                     .boardVO(boardService.getBoardByName(getArticle.get().getBoard().getName()))
                     .build();
             return articleVO;
@@ -96,6 +105,7 @@ public class ArticleServiceImpl implements ArticleService {
         articleRepository.findOne(builder).ifPresent(art -> {
             art.setTitle(article.getTitle());
             art.setContent(article.getContent());
+            art.setUpdateDate(LocalDateTime.now());
             articleRepository.save(art);
             result.set(true);
         });

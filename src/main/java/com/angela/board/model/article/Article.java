@@ -23,8 +23,8 @@ public class Article extends BaseEntity<Long> {
     @Column(updatable = false)
     @CreatedDate
     private LocalDateTime createDate;
+    private LocalDateTime updateDate;
 
-    //게시글의 소속 게시판
     @ManyToOne
     @PrimaryKeyJoinColumn
     //@JsonBackReference
