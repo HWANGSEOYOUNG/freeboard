@@ -9,6 +9,10 @@ version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '11'
 
 configurations {
+    developmentOnly
+    runtimeClasspath {
+        extendsFrom developmentOnly
+    }
     compileOnly {
         extendsFrom annotationProcessor
     }
@@ -41,6 +45,10 @@ dependencies {
 
     implementation("com.querydsl:querydsl-apt:${queryDslVersion}")
     implementation("com.querydsl:querydsl-jpa:${queryDslVersion}")
+
+    // webjars
+    implementation('org.webjars:vue:2.6.11')
+    implementation('org.webjars.npm:axios:0.19.0')
 
     annotationProcessor(
             "com.querydsl:querydsl-apt:${queryDslVersion}:jpa",

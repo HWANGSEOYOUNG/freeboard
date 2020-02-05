@@ -1,41 +1,56 @@
 package com.angela.board.api;
 
-//@Api
-//@RestController
-//@RequiredArgsConstructor
-//@RequestMapping("/board")
-//public class ArticleApi {
-//
-//    private final ArticleService articleService;
-//    private final BoardService boardService;
-//
-//    @PostMapping("/write")
-//    public boolean create(ArticleDTO param){
-//        return true;
-//    }
+import com.angela.board.data.dto.ArticleDTO;
+import com.angela.board.data.vo.ArticleVO;
+import com.angela.board.model.board.Board;
+import com.angela.board.service.ArticleService;
+import com.angela.board.service.BoardService;
+import io.swagger.annotations.Api;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.bind.annotation.*;
 
-//    //전체 게시글 읽기
-//    @RequestMapping(path = "/{boardId}/list", method = RequestMethod.GET)
-//    public List<Article> listAll(@PathVariable("boardId")long boardId){
-//
-//    }
-//
-//    //선택한 게시글 읽기
-//    @RequestMapping(path = "/{id}", method = RequestMethod.GET)
-//    public boolean retrieve(@PathVariable("id") long id){
-//
-//    }
-//
-//    //게시글 수정
-//    @RequestMapping(path = "/{id}/modify", method = RequestMethod.PATCH)
-//    public int update(){
-//
-//    }
-//
-//    //게시글 삭제
-//    @RequestMapping(path = "/{id}/del", method = RequestMethod.DELETE)
-//    public boolean delete(){
-//
-//    }
+import java.util.List;
+import java.util.Optional;
 
-//}
+@Slf4j
+@Api
+@RestController
+@RequiredArgsConstructor
+@RequestMapping("/board")
+public class ArticleApi {
+
+    private final ArticleService articleService;
+    private final BoardService boardService;
+
+    @PostMapping("/write")
+    public boolean create(@RequestParam String boardName, @RequestBody ArticleDTO article){
+        return articleService.createArticle(boardName,article);
+    }
+
+    //게시판 내 전체 게시글
+    @GetMapping("/list")
+    public List<ArticleVO> list(@RequestParam String boardName){
+        Optional<Board> board = boardService.getBoard(boardName);
+
+        if(board.isEmpty()) return null;
+
+        return articleService.findArticlesBoardGroup(board.get());
+    }
+
+    @GetMapping("/article")
+    public ArticleVO retrieve(@RequestParam Long id){
+        return  articleService.getArticleById(id);
+    }
+
+    @PutMapping("/modify")
+    public boolean update(@RequestParam Long id, @RequestBody ArticleDTO article){
+        return articleService.updateArticle(id,article);
+    }
+
+    @DeleteMapping("/del")
+    public boolean delete(@RequestParam Long id){
+        return articleService.deleteArticle(id);
+    }
+
+}

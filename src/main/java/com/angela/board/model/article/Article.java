@@ -1,32 +1,36 @@
 package com.angela.board.model.article;
 
+import com.angela.board.model.board.Board;
 import com.angela.board.model.common.BaseEntity;
+import com.angela.board.model.reply.Reply;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.annotations.CreationTimestamp;
+import lombok.ToString;
+import org.springframework.data.annotation.CreatedDate;
 
-import javax.persistence.Entity;
-import java.util.Date;
+import javax.persistence.*;
+import java.time.LocalDateTime;
+import java.util.List;
 
-//게시글
 @Getter
 @Setter
 @Entity
+@ToString(exclude = "board")
 public class Article extends BaseEntity<Long> {
-
-    //제목
     private String title;
-
-    //내용
     private String content;
 
-    //작성일
-    @CreationTimestamp
-    private Date createDate;
+    @Column(updatable = false)
+    @CreatedDate
+    private LocalDateTime createDate;
+    private LocalDateTime updateDate;
 
-    //게시글의 소속 게시판
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name= "id_board")
-//    private Board board;
+    @ManyToOne
+    @PrimaryKeyJoinColumn
+    //@JsonBackReference
+    private Board board;
+
+    @OneToMany(orphanRemoval = true, mappedBy = "article")
+    private List<Reply> replyList;
 
 }
