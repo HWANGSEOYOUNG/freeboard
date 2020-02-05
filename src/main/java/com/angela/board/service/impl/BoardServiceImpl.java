@@ -63,6 +63,10 @@ public class BoardServiceImpl implements BoardService {
 
     @Override
     public boolean addBoard(BoardDTO param) {
+        if(param.getName() == null){
+            return false;
+        }
+
         BooleanBuilder builder = new BooleanBuilder();
         QBoard qBoard = QBoard.board;
         builder.and(qBoard.name.contains(param.getName()));

@@ -24,7 +24,7 @@ public class ArticleApi {
     private final BoardService boardService;
 
     @PostMapping("/write")
-    public boolean create(@RequestParam String boardName, ArticleDTO article){
+    public boolean create(@RequestParam String boardName, @RequestBody ArticleDTO article){
         return articleService.createArticle(boardName,article);
     }
 
@@ -44,7 +44,7 @@ public class ArticleApi {
     }
 
     @PutMapping("/modify")
-    public boolean update(@RequestParam Long id, ArticleDTO article){
+    public boolean update(@RequestParam Long id, @RequestBody ArticleDTO article){
         return articleService.updateArticle(id,article);
     }
 

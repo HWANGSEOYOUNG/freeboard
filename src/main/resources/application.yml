@@ -1,3 +1,7 @@
+spring:
+  freemarker:
+    suffix: .ftl
+
 logging:
   level:
     org.springframework.web: debug

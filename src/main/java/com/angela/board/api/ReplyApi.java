@@ -22,7 +22,7 @@ public class ReplyApi {
     private final ArticleService articleService;
 
     @PostMapping("/add")
-    public boolean add(@RequestParam Long articleId, ReplyDTO reply){
+    public boolean add(@RequestParam Long articleId, @RequestBody ReplyDTO reply){
         return replyService.addReply(articleId,reply);
     }
 
