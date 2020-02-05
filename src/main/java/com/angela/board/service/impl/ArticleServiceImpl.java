@@ -13,6 +13,7 @@ import com.google.common.collect.Lists;
 import com.querydsl.core.BooleanBuilder;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
@@ -48,6 +49,15 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
+    public Optional<Article> getArticle(Long id) {
+        Article article = new Article();
+        article.setId(id);
+        Example<Article> e = Example.of(article);
+
+        return articleRepository.findOne(e);
+    }
+
+    @Override
     public List<ArticleVO> findArticlesBoardGroup(Board board) {
         return setArticleVOs(articleRepository.findAll(ArticlePredicate.eqBoard(board)));
     }
@@ -74,25 +84,32 @@ public class ArticleServiceImpl implements ArticleService {
     //@Transactional
     @Override
     public ArticleVO getArticleById(Long id) {
-        BooleanBuilder builder = new BooleanBuilder();
-        QArticle qArticle = QArticle.article;
-        builder.and(qArticle.id.eq(id));
-        Optional<Article> getArticle = articleRepository.findOne(builder);
+        Article getArticle = entityArticleById(id);
 
-        if (!getArticle.isEmpty()) {
+        if (getArticle != null) {
             ArticleVO articleVO = ArticleVO.builder()
-                    .id(getArticle.get().getId())
-                    .title(getArticle.get().getTitle())
-                    .content(getArticle.get().getContent())
-                    .createDate(getArticle.get().getCreateDate().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss")))
-                    .updateDate(getArticle.get().getUpdateDate() == null ? null : getArticle.get().getUpdateDate().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss")))
-                    .boardVO(boardService.getBoardByName(getArticle.get().getBoard().getName()))
+                    .id(getArticle.getId())
+                    .title(getArticle.getTitle())
+                    .content(getArticle.getContent())
+                    .createDate(getArticle.getCreateDate().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss")))
+                    .updateDate(getArticle.getUpdateDate() == null ? null : getArticle.getUpdateDate().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss")))
+                    .boardVO(boardService.getBoardByName(getArticle.getBoard().getName()))
                     .build();
             return articleVO;
         } else {
             return null;
         }
 
+    }
+
+    @Override
+    public Article entityArticleById(Long id){
+        BooleanBuilder builder = new BooleanBuilder();
+        QArticle qArticle = QArticle.article;
+        builder.and(qArticle.id.eq(id));
+        Optional<Article> getArticle = articleRepository.findOne(builder);
+
+        return getArticle.orElse(null);
     }
 
     @Override

@@ -5,7 +5,9 @@ import com.angela.board.model.common.BaseEntity;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.springframework.data.annotation.CreatedDate;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
@@ -23,5 +25,7 @@ public class Reply extends BaseEntity<Long> {
 
     private String reContent;
 
+    @Column(updatable = false)
+    @CreatedDate
     private LocalDateTime reCreateDate;
 }
