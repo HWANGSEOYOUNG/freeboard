@@ -63,13 +63,13 @@ public class BoardServiceImpl implements BoardService {
 
     @Override
     public boolean addBoard(BoardDTO param) {
-        if(param.getName() == null){
+        if (param.getName() == null || param.getName().length() == 0) {
             return false;
         }
 
         BooleanBuilder builder = new BooleanBuilder();
         QBoard qBoard = QBoard.board;
-        builder.and(qBoard.name.contains(param.getName()));
+        builder.and(qBoard.name.equalsIgnoreCase(param.getName()));
 
         AtomicBoolean result = new AtomicBoolean(false);
         if (boardRepository.findOne(builder).isEmpty()) {
@@ -84,6 +84,10 @@ public class BoardServiceImpl implements BoardService {
 
     @Override
     public boolean updateBoard(BoardUpdateDTO param) {
+        if (param.getName() == null || param.getName().length() == 0) {
+            return false;
+        }
+
         BooleanBuilder builder = new BooleanBuilder();
         QBoard qBoard = QBoard.board;
         builder.and(qBoard.id.eq(param.getId()));
@@ -102,7 +106,7 @@ public class BoardServiceImpl implements BoardService {
     public boolean deleteBoard(String name) {
         BooleanBuilder builder = new BooleanBuilder();
         QBoard qBoard = QBoard.board;
-        builder.and(qBoard.name.contains(name));
+        builder.and(qBoard.name.equalsIgnoreCase(name));
 
         AtomicBoolean result = new AtomicBoolean(false);
         boardRepository.findOne(builder).ifPresent(board -> {

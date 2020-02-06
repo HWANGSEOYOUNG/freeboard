@@ -12,10 +12,13 @@
                 <div class="col-md-3">
                     <input class="form-control" type="text" v-model="name" placeholder="게시판명">
                 </div>
+                <div class="col-xl-9">
+                    <button class="btn btn-primary mb-2" type="button" @click="add()">저장!</button>
+                </div>
             </div>
             <div class="form-group row">
                 <div class="col-xl-10">
-                    <button class="btn btn-primary mb-2" type="button" @click="add()">저장!</button>
+                    <button class="btn btn-primary mb-2" type="button" @click="list()">리스트 이동 >></button>
                 </div>
             </div>
         </form>
@@ -29,13 +32,21 @@
         },
         methods: {
             add: function () {
+
+                if(add.$data.name == 0){
+                    alert("게시판명을 입력하세요!");
+                    return;
+                }
+
                 let param = { name : add.$data.name };
                 console.log(param.name);
                 axios
                     .post('/manage/add', param)
                     .then(function (response) {
-                        console.log(response);
                     })
+            },
+            list: function () {
+                location.href = '/list';
             }
         }
     })

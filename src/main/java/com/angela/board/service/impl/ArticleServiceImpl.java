@@ -1,6 +1,7 @@
 package com.angela.board.service.impl;
 
 import com.angela.board.data.dto.ArticleDTO;
+import com.angela.board.data.dto.ArticleUpdateDTO;
 import com.angela.board.data.vo.ArticleVO;
 import com.angela.board.model.article.Article;
 import com.angela.board.model.article.QArticle;
@@ -32,10 +33,14 @@ public class ArticleServiceImpl implements ArticleService {
     private final BoardService boardService;
 
     @Override
-    public boolean createArticle(String boardName, ArticleDTO article) {
+    public boolean createArticle(ArticleDTO article) {
+        if(article.getTitle()==null || article.getTitle().length() == 0 || article.getContent() == null || article.getContent().length() == 0){
+            return false;
+        }
+
         Article saved = new Article();
 
-        saved.setBoard(boardService.entityBoardByName(boardName));
+        saved.setBoard(boardService.entityBoardByName(article.getBoardName()));
         if (saved.getBoard() != null) {
             saved.setTitle(article.getTitle());
             saved.setContent(article.getContent());
@@ -113,10 +118,14 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public boolean updateArticle(Long id, ArticleDTO article) {
+    public boolean updateArticle(ArticleUpdateDTO article) {
+        if(article.getTitle()==null || article.getTitle().length() == 0 || article.getContent() == null || article.getContent().length() == 0){
+            return false;
+        }
+
         BooleanBuilder builder = new BooleanBuilder();
         QArticle qArticle = QArticle.article;
-        builder.and(qArticle.id.eq(id));
+        builder.and(qArticle.id.eq(article.getId()));
 
         AtomicBoolean result = new AtomicBoolean(false);
         articleRepository.findOne(builder).ifPresent(art -> {

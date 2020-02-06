@@ -1,6 +1,7 @@
 package com.angela.board.api;
 
 import com.angela.board.data.dto.ArticleDTO;
+import com.angela.board.data.dto.ArticleUpdateDTO;
 import com.angela.board.data.vo.ArticleVO;
 import com.angela.board.model.board.Board;
 import com.angela.board.service.ArticleService;
@@ -24,8 +25,8 @@ public class ArticleApi {
     private final BoardService boardService;
 
     @PostMapping("/write")
-    public boolean create(@RequestParam String boardName, @RequestBody ArticleDTO article){
-        return articleService.createArticle(boardName,article);
+    public boolean create(@RequestBody ArticleDTO article){
+        return articleService.createArticle(article);
     }
 
     //게시판 내 전체 게시글
@@ -44,8 +45,8 @@ public class ArticleApi {
     }
 
     @PutMapping("/modify")
-    public boolean update(@RequestParam Long id, @RequestBody ArticleDTO article){
-        return articleService.updateArticle(id,article);
+    public boolean update(@RequestBody ArticleUpdateDTO article){
+        return articleService.updateArticle(article);
     }
 
     @DeleteMapping("/del")
