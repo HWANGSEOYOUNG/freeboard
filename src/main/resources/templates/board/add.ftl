@@ -47,7 +47,7 @@
                         if(response.data === true){
                             alert("게시판 생성!")
                         }else {
-                            alert("게시판 생성 실패!")
+                            alert("게시판 생성 실패ㅠㅠ")
                         }
                     })
             },

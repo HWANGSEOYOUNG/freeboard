@@ -11,4 +11,5 @@ public class ReplyVO {
     private String reCreateDate;
 
     private ArticleVO articleVO;
+
 }

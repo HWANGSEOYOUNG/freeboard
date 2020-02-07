@@ -44,8 +44,8 @@
                             <th>no</th>
                             <th>제목</th>
                             <th>내용</th>
-                            <th>작성일</th>
-                            <th>최종수정일</th>
+                            <th>작성일시</th>
+                            <th>최종수정일시</th>
                             <th>댓글</th>
                             <th>관리</th>
                         </tr>
@@ -96,8 +96,8 @@
                             <th>no</th>
                             <th>제목</th>
                             <th>내용</th>
-                            <th>작성일</th>
-                            <th>최종수정일</th>
+                            <th>작성일시</th>
+                            <th>최종수정일시</th>
                             <th>관리</th>
                         </tr>
                         </thead>
@@ -150,30 +150,6 @@
         </div>
     </div>
 
-<#--    <div v-if="modify" class="col-md-12">
-        <div class="card card-default">
-            <div class="card-header">{{id}}번 게시글 수정</div>
-            <div class="card-body">
-                <div class="form-group row">
-                    <div class="col-md-8">
-                        <input class="form-control" type="text" v-model="title" placeholder="제목">
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <div class="col-md-8">
-                        <input class="form-control" type="text" v-model="content" placeholder="내용">
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <div class="col-xl-10">
-                        <button class="btn btn-primary mb-2" type="button" @click="updateArticle()">수정!</button>
-                        <button class="btn btn-primary mb-2" type="button" @click="resetModify()">취소</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>-->
-
     <div v-if="reply" class="col-md-12">
         <div class="card card-default">
             <div class="card-header">{{id}}번 댓글</div>
@@ -184,7 +160,7 @@
                         <tr>
                             <th>no</th>
                             <th>내용</th>
-                            <th>작성일</th>
+                            <th>작성일시</th>
                             <th>관리</th>
                         </tr>
                         </thead>
@@ -204,7 +180,7 @@
                 </div>
                 <div class="form-group row">
                     <div class="col-md-9">
-                        <input class="form-control" type="text" v-model="reContent" placeholder="내용">
+                        <input class="form-control" type="text" v-model="reContent" placeholder="댓글 입력">
                     </div>
                     <div class="col-xl-3">
                         <button class="btn btn-primary mb-2" type="button"
@@ -271,9 +247,6 @@
             },
             deleteBoard: function (event) {
                 let name = event.target.value;
-                this.add = false;
-                this.modify = false;
-                this.reply = false;
 
                 axios
                     .delete('/manage/del', {

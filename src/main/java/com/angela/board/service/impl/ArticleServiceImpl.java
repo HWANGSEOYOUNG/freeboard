@@ -34,7 +34,7 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     public boolean createArticle(ArticleDTO article) {
-        if(article.getTitle()==null || article.getTitle().length() == 0 || article.getContent() == null || article.getContent().length() == 0){
+        if (article.getTitle() == null || article.getTitle().length() == 0 || article.getContent() == null || article.getContent().length() == 0) {
             return false;
         }
 
@@ -86,7 +86,6 @@ public class ArticleServiceImpl implements ArticleService {
         return results;
     }
 
-    //@Transactional
     @Override
     public ArticleVO getArticleById(Long id) {
         Article getArticle = entityArticleById(id);
@@ -108,7 +107,7 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public Article entityArticleById(Long id){
+    public Article entityArticleById(Long id) {
         BooleanBuilder builder = new BooleanBuilder();
         QArticle qArticle = QArticle.article;
         builder.and(qArticle.id.eq(id));
@@ -119,7 +118,7 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     public boolean updateArticle(ArticleUpdateDTO article) {
-        if(article.getTitle()==null || article.getTitle().length() == 0 || article.getContent() == null || article.getContent().length() == 0){
+        if (article.getTitle() == null || article.getTitle().length() == 0 || article.getContent() == null || article.getContent().length() == 0) {
             return false;
         }
 

@@ -64,7 +64,6 @@ public class ReplyServiceImpl implements ReplyService {
 
             results.add(re);
         });
-
         return results;
     }
 
