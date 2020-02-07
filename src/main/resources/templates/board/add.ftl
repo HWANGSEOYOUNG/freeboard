@@ -33,16 +33,22 @@
         methods: {
             add: function () {
 
-                if(add.$data.name == 0){
+                if(add.$data.name === 0){
                     alert("게시판명을 입력하세요!");
                     return;
                 }
 
                 let param = { name : add.$data.name };
-                console.log(param.name);
                 axios
                     .post('/manage/add', param)
                     .then(function (response) {
+                        add.$data.name = '';
+
+                        if(response.data === true){
+                            alert("게시판 생성!")
+                        }else {
+                            alert("게시판 생성 실패!")
+                        }
                     })
             },
             list: function () {

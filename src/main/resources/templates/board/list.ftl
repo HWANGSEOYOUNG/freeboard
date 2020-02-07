@@ -85,6 +85,47 @@
         </div>
     </div>
 
+    <div v-if="modify" class="col-md-12">
+        <div class="card card-default">
+            <div class="card-header">{{boardName}}</div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>no</th>
+                            <th>제목</th>
+                            <th>내용</th>
+                            <th>작성일</th>
+                            <th>최종수정일</th>
+                            <th>관리</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr v-for="value in articles">
+                            <td>{{ value.id}}</td>
+                            <td v-if="id === value.id"><input class="form-control" type="text" :value="value.title" v-model="title" placeholder="제목"></td></v-if>
+                            <td v-else>{{ value.title}}</td></v-else>
+                            <td v-if="id === value.id"><input class="form-control" type="text" :value="value.content" v-model="content" placeholder="내용"></td></v-if>
+                            <td v-else>{{ value.content}}</td></v-else>
+                            <td>{{ value.createDate}}</td>
+                            <td>{{ value.updateDate}}</td>
+                            <td>
+                                <button v-if="id === value.id" class="mb-1 btn btn-green" type="button" :value="value.id"
+                                        @click="updateArticle()">수정
+                                </button>
+                                <button v-if="id === value.id" class="mb-1 btn btn-danger" type="button" :value="value.id"
+                                        @click="resetModify()">취소
+                                </button>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div v-if="add" class="col-md-12">
         <div class="card card-default">
             <div class="card-header">게시글 작성</div>
@@ -109,7 +150,7 @@
         </div>
     </div>
 
-    <div v-if="modify" class="col-md-12">
+<#--    <div v-if="modify" class="col-md-12">
         <div class="card card-default">
             <div class="card-header">{{id}}번 게시글 수정</div>
             <div class="card-body">
@@ -131,7 +172,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div>-->
 
     <div v-if="reply" class="col-md-12">
         <div class="card card-default">
@@ -162,10 +203,10 @@
                     </table>
                 </div>
                 <div class="form-group row">
-                    <div class="col-md-8">
+                    <div class="col-md-9">
                         <input class="form-control" type="text" v-model="reContent" placeholder="내용">
                     </div>
-                    <div class="col-xl-4">
+                    <div class="col-xl-3">
                         <button class="btn btn-primary mb-2" type="button"
                                 @click="addReply()">댓글 추가
                         </button>
@@ -196,6 +237,11 @@
         },
         methods: {
             check: function () {
+                this.list = false;
+                this.add = false;
+                this.modify = false;
+                this.reply = false;
+
                 axios
                     .get('/manage/list')
                     .then(function (response) {
@@ -225,6 +271,9 @@
             },
             deleteBoard: function (event) {
                 let name = event.target.value;
+                this.add = false;
+                this.modify = false;
+                this.reply = false;
 
                 axios
                     .delete('/manage/del', {
@@ -252,6 +301,9 @@
             },
             deleteArticle: function (event) {
                 let id = event.target.value;
+                this.add = false;
+                this.modify = false;
+                this.reply = false;
 
                 axios
                     .delete('/board/del', {
@@ -265,7 +317,7 @@
 
             },
             writeArticle: function () {
-                if(list.$data.title.length == 0 || list.$data.content == 0){
+                if(list.$data.title.length === 0 || list.$data.content.length === 0){
                     alert("제목 또는 내용을 입력하세요!");
                     return;
                 }
@@ -292,6 +344,7 @@
             },
             articleUpdateClick: function (event) {
                 this.id = event.target.value;
+                this.list = false;
                 this.modify = true;
                 this.add = false;
                 this.reply = false;
@@ -305,12 +358,14 @@
                         }
                     })
                     .then(function (response) {
+                        list.$data.id = response.data.id;
                         list.$data.title = response.data.title;
                         list.$data.content = response.data.content;
+
                     })
             },
             updateArticle: function () {
-                if(list.$data.title.length == 0 || list.$data.content == 0){
+                if(list.$data.title.length === 0 || list.$data.content.length === 0){
                     alert("제목 또는 내용을 입력하세요!");
                     return;
                 }
@@ -325,10 +380,12 @@
                     .then(function () {
                         list.boardReset();
                         list.$data.modify = false;
+                        list.$data.list = true;
                     })
             },
             resetModify : function (){
                 this.modify = false;
+                this.list = true;
             },
             resetArticle : function () {
                 this.add = false;
@@ -359,7 +416,7 @@
             },
             addReply: function () {
 
-                if(list.$data.reContent.length == 0){
+                if(list.$data.reContent.length === 0){
                     alert("댓글을 입력하세요!");
                     return;
                 }
