@@ -22,8 +22,8 @@ public class ReplyApi {
     private final ArticleService articleService;
 
     @PostMapping("/add")
-    public boolean add(@RequestParam Long articleId, @RequestBody ReplyDTO reply){
-        return replyService.addReply(articleId,reply);
+    public boolean add( @RequestBody ReplyDTO reply){
+        return replyService.addReply(reply);
     }
 
     @GetMapping("/list")

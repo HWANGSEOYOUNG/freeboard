@@ -28,9 +28,13 @@ public class ReplyServiceImpl implements ReplyService {
     private final ArticleService articleService;
 
     @Override
-    public boolean addReply(Long articleId, ReplyDTO reply) {
+    public boolean addReply(ReplyDTO reply) {
+        if(reply.getReContent() == null || reply.getReContent().length() == 0){
+            return false;
+        }
+
         Reply saved = new Reply();
-        saved.setArticle(articleService.entityArticleById(articleId));
+        saved.setArticle(articleService.entityArticleById(reply.getArticleId()));
         if (saved.getArticle() != null) {
             saved.setReContent(reply.getReContent());
             saved.setReCreateDate(LocalDateTime.now());
@@ -60,7 +64,6 @@ public class ReplyServiceImpl implements ReplyService {
 
             results.add(re);
         });
-
         return results;
     }
 

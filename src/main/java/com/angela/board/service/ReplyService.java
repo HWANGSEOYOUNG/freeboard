@@ -10,7 +10,7 @@ import java.util.List;
 @Service
 public interface ReplyService {
 
-    boolean addReply(Long articleId, ReplyDTO reply);
+    boolean addReply(ReplyDTO reply);
 
     List<ReplyVO> findReplyListArticleGroup(Article article);
 

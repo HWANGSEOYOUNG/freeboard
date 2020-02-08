@@ -2,6 +2,7 @@ package com.angela.board.service;
 
 
 import com.angela.board.data.dto.ArticleDTO;
+import com.angela.board.data.dto.ArticleUpdateDTO;
 import com.angela.board.data.vo.ArticleVO;
 import com.angela.board.model.article.Article;
 import com.angela.board.model.board.Board;
@@ -15,7 +16,7 @@ public interface ArticleService {
 
     Optional<Article> getArticle(Long id);
 
-    boolean createArticle(String boardName, ArticleDTO article);
+    boolean createArticle(ArticleDTO article);
 
     List<ArticleVO> findArticlesBoardGroup(Board board);
 
@@ -23,7 +24,7 @@ public interface ArticleService {
 
     Article entityArticleById(Long id);
 
-    boolean updateArticle(Long id, ArticleDTO article);
+    boolean updateArticle(ArticleUpdateDTO article);
 
     boolean deleteArticle(Long id);
 
